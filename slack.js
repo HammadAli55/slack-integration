@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const webhookUrl = 'https://hooks.slack.com/services/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'; // Replace with your webhook URL
+const webhookUrl = ''; // Replace with your webhook URL
 const message = {
   blocks: [
 		{
