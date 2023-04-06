@@ -7,18 +7,6 @@ app.use(bodyparser.json())
 const cors = require('cors')
 app.use(cors())
 
-// const webhookUrl = 'https://hooks.slack.com/services/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';
-
-function sendMessageToSlack(webhookUrl, payload) {
-    axios.post(webhookUrl, payload)
-        .then((response) => {
-            console.log('Message sent to Slack!');
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-}
-
 app.post('/slack', (req, res) => {
     const webhookUrl = req.body.data;
     console.log("webhook: ", webhookUrl)
@@ -52,18 +40,14 @@ app.post('/slack', (req, res) => {
         ] // Replace with your message text
     };
 
-    try {
-        sendMessageToSlack(webhookUrl, message);
-        res.json({
-            data: "True",
-        });
-    }
-    catch (error) {
-        res.json({
-            data: error,
-        });
-        return false;
-    }
+    axios.post(webhookUrl, message)
+    .then(() => {
+        res.send({data: true});
+      })
+      .catch((error) => {
+        console.error(error);
+        res.send({data: false});
+      });
 });
 
 app.listen(5000, () => {
